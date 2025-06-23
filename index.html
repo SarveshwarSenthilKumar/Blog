@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoJournal | Your Intelligent Diary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --primary-dark: #5649c0;
+            --secondary: #00cec9;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --gray: #dfe6e9;
+            --success: #00b894;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .cta-button {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+            color: white;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        /* Search Section */
+        .search-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+        }
+        
+        .search-container {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid var(--gray);
+            border-radius: 5px 0 0 5px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .search-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .search-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .calendar-toggle {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .calendar-toggle i {
+            margin-right: 8px;
+        }
+        
+        /* Calendar Modal */
+        .calendar-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .calendar-container {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            padding: 30px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .close-calendar {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 600;
+            padding: 10px;
+            color: var(--primary);
+        }
+        
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .calendar-day:hover {
+            background-color: var(--gray);
+        }
+        
+        .calendar-day.has-entry {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .calendar-day.empty {
+            visibility: hidden;
+        }
+        
+        /* Journal Entries */
+        .entries-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .entry-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .entry-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .entry-date {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px;
+            font-weight: 600;
+        }
+        
+        .entry-content {
+            padding: 20px;
+        }
+        
+        .entry-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .entry-excerpt {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .read-more {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .read-more i {
+            margin-left: 5px;
+            transition: transform 0.3s;
+        }
+        
+        .read-more:hover i {
+            transform: translateX(3px);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 80px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #bbb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #bbb;
+            font-size: 14px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .nav-links {
+                margin-top: 20px;
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-links li {
+                margin-left: 0;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .search-container {
+                flex-direction: column;
+            }
+            
+            .search-input {
+                border-radius: 5px;
+                margin-bottom: 10px;
+            }
+            
+            .search-button {
+                border-radius: 5px;
+                padding: 15px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .entries-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">
+                    <i class="fas fa-book-open"></i>
+                    <span>NeoJournal</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#" class="cta-button">Sign Up</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        <section class="hero">
+            <h1>Your Personal Digital Journal</h1>
+            <p>Capture your thoughts, ideas, and memories in a beautifully designed space that grows with you.</p>
+        </section>
+        
+        <section class="search-section">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search your journal entries...">
+                <button class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="search-options">
+                <span>Or browse by date:</span>
+                <button class="calendar-toggle" id="openCalendar">
+                    <i class="far fa-calendar-alt"></i>
+                    Open Calendar
+                </button>
+            </div>
+        </section>
+        
+        <section class="entries-container" id="entriesContainer">
+            <!-- Journal entries will be dynamically added here -->
+        </section>
+    </main>
+    
+    <div class="calendar-modal" id="calendarModal">
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <h3 class="calendar-title">Browse Entries by Date</h3>
+                <button class="close-calendar" id="closeCalendar">&times;</button>
+            </div>
+            <div class="calendar-grid" id="calendarGrid">
+                <!-- Calendar will be dynamically generated here -->
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>NeoJournal</h3>
+                    <p>Your intelligent digital journal designed for the modern thinker.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Features</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Secure Storage</a></li>
+                        <li><a href="#">AI Insights</a></li>
+                        <li><a href="#">Custom Themes</a></li>
+                        <li><a href="#">Mobile App</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 NeoJournal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Calendar functionality
+        const calendarModal = document.getElementById('calendarModal');
+        const openCalendarBtn = document.getElementById('openCalendar');
+        const closeCalendarBtn = document.getElementById('closeCalendar');
+        const calendarGrid = document.getElementById('calendarGrid');
+        const entriesContainer = document.getElementById('entriesContainer');
+        const searchInput = document.querySelector('.search-input');
+        const searchButton = document.querySelector('.search-button');
+        
+        // Sample journal entries data
+        const journalEntries = [
+            { id: 1, date: '2023-06-24', title: 'The Beginning of Something New', excerpt: 'Today marks the start of my digital journal journey...', content: 'Full content here...' },
+            { id: 2, date: '2023-06-22', title: 'Inspiration Strikes', excerpt: 'Had an amazing idea for a new project while walking...', content: 'Full content here...' },
+            { id: 3, date: '2023-06-18', title: 'Weekend Reflections', excerpt: 'Spent time with family this weekend...', content: 'Full content here...' },
+            { id: 4, date: '2023-06-15', title: 'Productivity Tips', excerpt: 'Discovered a new technique for staying focused...', content: 'Full content here...' },
+            { id: 5, date: '2023-06-10', title: 'Travel Plans', excerpt: 'Started planning the summer vacation...', content: 'Full content here...' }
+        ];
+        
+        // Dates with entries for calendar
+        const entryDates = journalEntries.map(entry => entry.date);
+        
+        // Open calendar modal
+        openCalendarBtn.addEventListener('click', () => {
+            calendarModal.style.display = 'flex';
+            generateCalendar();
+        });
+        
+        // Close calendar modal
+        closeCalendarBtn.addEventListener('click', () => {
+            calendarModal.style.display = 'none';
+        });
+        
+        // Close modal when clicking outside
+        calendarModal.addEventListener('click', (e) => {
+            if (e.target === calendarModal) {
+                calendarModal.style.display = 'none';
+            }
+        });
+        
+        // Generate calendar
+        function generateCalendar() {
+            calendarGrid.innerHTML = '';
+            
+            // Add day headers
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            days.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'calendar-day-header';
+                dayHeader.textContent = day;
+                calendarGrid.appendChild(dayHeader);
+            });
+            
+            // Get current month and year
+            const currentDate = new Date();
+            const currentMonth = currentDate.getMonth();
+            const currentYear = currentDate.getFullYear();
+            
+            // Get first day of month
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            
+            // Get days in month
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            
+            // Add empty cells for days before first day
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day empty';
+                calendarGrid.appendChild(emptyDay);
+            }
+            
+            // Add days of month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(currentYear, currentMonth, day);
+                const dateString = formatDate(date);
+                
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = day;
+                
+                // Check if date has an entry
+                if (entryDates.includes(dateString)) {
+                    dayElement.classList.add('has-entry');
+                }
+                
+                // Add click event to show entries for that day
+                dayElement.addEventListener('click', () => {
+                    showEntriesForDate(dateString);
+                    calendarModal.style.display = 'none';
+                });
+                
+                calendarGrid.appendChild(dayElement);
+            }
+        }
+        
+        // Format date as YYYY-MM-DD
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+        
+        // Show entries for a specific date
+        function showEntriesForDate(date) {
+            const filteredEntries = journalEntries.filter(entry => entry.date === date);
+            
+            entriesContainer.innerHTML = '';
+            
+            if (filteredEntries.length === 0) {
+                entriesContainer.innerHTML = '<p>No entries found for this date.</p>';
+                return;
+            }
+            
+            filteredEntries.forEach(entry => {
+                const entryDate = new Date(entry.date);
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                const formattedDate = entryDate.toLocaleDateString('en-US', options);
+                
+                const entryCard = document.createElement('div');
+                entryCard.className = 'entry-card';
+                entryCard.innerHTML = `
+                    <div class="entry-date">${formattedDate}</div>
+                    <div class="entry-content">
+                        <h3 class="entry-title">${entry.title}</h3>
+                        <p class="entry-excerpt">${entry.excerpt}</p>
+                        <a href="#" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                `;
+                
+                entriesContainer.appendChild(entryCard);
+            });
+        }
+        
+        // Search functionality
+        searchButton.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+        
+        function performSearch() {
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            if (!searchTerm) {
+                // If search is empty, show all entries
+                renderAllEntries();
+                return;
+            }
+            
+            const filteredEntries = journalEntries.filter(entry => 
+                entry.title.toLowerCase().includes(searchTerm) || 
+                entry.excerpt.toLowerCase().includes(searchTerm) ||
+                entry.content.toLowerCase().includes(searchTerm)
+            );
+            
+            entriesContainer.innerHTML = '';
+            
+            if (filteredEntries.length === 0) {
+                entriesContainer.innerHTML = '<p>No entries match your search.</p>';
+                return;
+            }
+            
+            filteredEntries.forEach(entry => {
+                const entryDate = new Date(entry.date);
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                const formattedDate = entryDate.toLocaleDateString('en-US', options);
+                
+                const entryCard = document.createElement('div');
+                entryCard.className = 'entry-card';
+                entryCard.innerHTML = `
+                    <div class="entry-date">${formattedDate}</div>
+                    <div class="entry-content">
+                        <h3 class="entry-title">${entry.title}</h3>
+                        <p class="entry-excerpt">${entry.excerpt}</p>
+                        <a href="#" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                `;
+                
+                entriesContainer.appendChild(entryCard);
+            });
+        }
+        
+        // Render all entries
+        function renderAllEntries() {
+            entriesContainer.innerHTML = '';
+            
+            journalEntries.forEach(entry => {
+                const entryDate = new Date(entry.date);
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                const formattedDate = entryDate.toLocaleDateString('en-US', options);
+                
+                const entryCard = document.createElement('div');
+                entryCard.className = 'entry-card';
+                entryCard.innerHTML = `
+                    <div class="entry-date">${formattedDate}</div>
+                    <div class="entry-content">
+                        <h3 class="entry-title">${entry.title}</h3>
+                        <p class="entry-excerpt">${entry.excerpt}</p>
+                        <a href="#" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                `;
+                
+                entriesContainer.appendChild(entryCard);
+            });
+        }
+        
+        // Initialize with all entries
+        renderAllEntries();
+    </script>
+</body>
+</html>
