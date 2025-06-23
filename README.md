@@ -1,0 +1,1 @@
+Remidner to set up the readme for this site, this is a temporary readme, this website is meant to be a blog for me
