@@ -527,240 +527,141 @@
     </footer>
     
     <script>
-        // Calendar functionality
-        const calendarModal = document.getElementById('calendarModal');
-        const openCalendarBtn = document.getElementById('openCalendar');
-        const closeCalendarBtn = document.getElementById('closeCalendar');
-        const calendarGrid = document.getElementById('calendarGrid');
-        const entriesContainer = document.getElementById('entriesContainer');
-        const searchInput = document.querySelector('.search-input');
-        const searchButton = document.querySelector('.search-button');
-        
-        // Sample journal entries data
-        const journalEntries = [
-            {
-                id: 1,
-                date: '2025-06-24', // The date of the entry
-                title: 'First Entry', // The title of your journal entry
-                excerpt: 'This is the first entry into the journal to get a feel for this writing style.', // A short preview of your entry
-                content: 'Hi! My name is Sarveshwar Senthil Kumar and this is my first journal entry on this new blog site. This seemed like a cool concept which I stole from The Social Network.' // The complete journal entry
-            }
-        ];
-        
-        // Dates with entries for calendar
-        const entryDates = journalEntries.map(entry => entry.date);
-        
-        // Open calendar modal
-        openCalendarBtn.addEventListener('click', () => {
-            calendarModal.style.display = 'flex';
-            generateCalendar();
-        });
-        
-        // Close calendar modal
-        closeCalendarBtn.addEventListener('click', () => {
+    // Calendar functionality
+    const calendarModal = document.getElementById('calendarModal');
+    const openCalendarBtn = document.getElementById('openCalendar');
+    const closeCalendarBtn = document.getElementById('closeCalendar');
+    const calendarGrid = document.getElementById('calendarGrid');
+    const entriesContainer = document.getElementById('entriesContainer');
+    const searchInput = document.querySelector('.search-input');
+    const searchButton = document.querySelector('.search-button');
+    
+    // Sample journal entries data
+    const journalEntries = [
+        {
+            id: 1,
+            date: '2025-06-24',
+            title: 'First Entry',
+            excerpt: 'This is the first entry into the journal to get a feel for this writing style.',
+            content: 'Hi! My name is Sarveshwar Senthil Kumar and this is my first journal entry on this new blog site. This seemed like a cool concept which I stole from The Social Network.'
+        }
+    ];
+    
+    // Dates with entries for calendar
+    const entryDates = journalEntries.map(entry => entry.date);
+    
+    // Open calendar modal
+    openCalendarBtn.addEventListener('click', () => {
+        calendarModal.style.display = 'flex';
+        generateCalendar();
+    });
+    
+    // Close calendar modal
+    closeCalendarBtn.addEventListener('click', () => {
+        calendarModal.style.display = 'none';
+    });
+    
+    // Close modal when clicking outside
+    calendarModal.addEventListener('click', (e) => {
+        if (e.target === calendarModal) {
             calendarModal.style.display = 'none';
+        }
+    });
+    
+    // Generate calendar
+    function generateCalendar() {
+        calendarGrid.innerHTML = '';
+        
+        // Add day headers
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        days.forEach(day => {
+            const dayHeader = document.createElement('div');
+            dayHeader.className = 'calendar-day-header';
+            dayHeader.textContent = day;
+            calendarGrid.appendChild(dayHeader);
         });
         
-        // Close modal when clicking outside
-        calendarModal.addEventListener('click', (e) => {
-            if (e.target === calendarModal) {
+        // Get current month and year
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth();
+        const currentYear = currentDate.getFullYear();
+        
+        // Get first day of month
+        const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+        
+        // Get days in month
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        
+        // Add empty cells for days before first day
+        for (let i = 0; i < firstDay; i++) {
+            const emptyDay = document.createElement('div');
+            emptyDay.className = 'calendar-day empty';
+            calendarGrid.appendChild(emptyDay);
+        }
+        
+        // Add days of month
+        for (let day = 1; day <= daysInMonth; day++) {
+            const date = new Date(currentYear, currentMonth, day);
+            const dateString = formatDate(date);
+            
+            const dayElement = document.createElement('div');
+            dayElement.className = 'calendar-day';
+            dayElement.textContent = day;
+            
+            // Check if date has an entry
+            if (entryDates.includes(dateString)) {
+                dayElement.classList.add('has-entry');
+            }
+            
+            // Add click event to show entries for that day
+            dayElement.addEventListener('click', () => {
+                showEntriesForDate(dateString);
                 calendarModal.style.display = 'none';
-            }
-        });
-        
-        // Generate calendar
-        function generateCalendar() {
-            calendarGrid.innerHTML = '';
-            
-            // Add day headers
-            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            days.forEach(day => {
-                const dayHeader = document.createElement('div');
-                dayHeader.className = 'calendar-day-header';
-                dayHeader.textContent = day;
-                calendarGrid.appendChild(dayHeader);
             });
             
-            // Get current month and year
-            const currentDate = new Date();
-            const currentMonth = currentDate.getMonth();
-            const currentYear = currentDate.getFullYear();
-            
-            // Get first day of month
-            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-            
-            // Get days in month
-            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-            
-            // Add empty cells for days before first day
-            for (let i = 0; i < firstDay; i++) {
-                const emptyDay = document.createElement('div');
-                emptyDay.className = 'calendar-day empty';
-                calendarGrid.appendChild(emptyDay);
-            }
-            
-            // Add days of month
-            for (let day = 1; day <= daysInMonth; day++) {
-                const date = new Date(currentYear, currentMonth, day);
-                const dateString = formatDate(date);
-                
-                const dayElement = document.createElement('div');
-                dayElement.className = 'calendar-day';
-                dayElement.textContent = day;
-                
-                // Check if date has an entry
-                if (entryDates.includes(dateString)) {
-                    dayElement.classList.add('has-entry');
-                }
-                
-                // Add click event to show entries for that day
-                dayElement.addEventListener('click', () => {
-                    showEntriesForDate(dateString);
-                    calendarModal.style.display = 'none';
-                });
-                
-                calendarGrid.appendChild(dayElement);
-            }
+            calendarGrid.appendChild(dayElement);
         }
-        
-        // Format date as YYYY-MM-DD
-        function formatDate(date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
-        
-        // Show entries for a specific date
-        function showEntriesForDate(date) {
-            const filteredEntries = journalEntries.filter(entry => entry.date === date);
-            
-            entriesContainer.innerHTML = '';
-            
-            if (filteredEntries.length === 0) {
-                entriesContainer.innerHTML = '<p>No entries found for this date.</p>';
-                return;
-            }
-            
-            filteredEntries.forEach(entry => {
-                const entryDate = new Date(entry.date);
-                const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                const formattedDate = entryDate.toLocaleDateString('en-US', options);
-                
-                const entryCard = document.createElement('div');
-                entryCard.className = 'entry-card';
-                entryCard.innerHTML = `
-                    <div class="entry-date">${formattedDate}</div>
+    }
+    
+    // Format date as YYYY-MM-DD
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+    
+    // Show full entry content
+    function showFullEntry(entryId) {
+        const entry = journalEntries.find(e => e.id === entryId);
+        if (entry) {
+            entriesContainer.innerHTML = `
+                <div class="entry-card">
+                    <div class="entry-date">${new Date(entry.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
                     <div class="entry-content">
                         <h3 class="entry-title">${entry.title}</h3>
-                        <p class="entry-excerpt">${entry.excerpt}</p>
-                        <a href="#" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                `;
-                
-                entriesContainer.appendChild(entryCard);
-            });
-        }
-        
-        // Search functionality
-        searchButton.addEventListener('click', performSearch);
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
-        
-        function performSearch() {
-            const searchTerm = searchInput.value.toLowerCase();
-            
-            if (!searchTerm) {
-                // If search is empty, show all entries
-                renderAllEntries();
-                return;
-            }
-            
-            const filteredEntries = journalEntries.filter(entry => 
-                entry.title.toLowerCase().includes(searchTerm) || 
-                entry.excerpt.toLowerCase().includes(searchTerm) ||
-                entry.content.toLowerCase().includes(searchTerm)
-            );
-            
-            entriesContainer.innerHTML = '';
-            
-            if (filteredEntries.length === 0) {
-                entriesContainer.innerHTML = '<p>No entries match your search.</p>';
-                return;
-            }
-            
-            filteredEntries.forEach(entry => {
-                const entryDate = new Date(entry.date);
-                const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                const formattedDate = entryDate.toLocaleDateString('en-US', options);
-                
-                const entryCard = document.createElement('div');
-                entryCard.className = 'entry-card';
-                entryCard.innerHTML = `
-                    <div class="entry-date">${formattedDate}</div>
-                    <div class="entry-content">
-                        <h3 class="entry-title">${entry.title}</h3>
-                        <p class="entry-excerpt">${entry.excerpt}</p>
-                        <a href="#" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                `;
-                
-                entriesContainer.appendChild(entryCard);
-            });
-        }
-        
-        // Render all entries
-        function renderAllEntries() {
-            entriesContainer.innerHTML = '';
-            
-            journalEntries.forEach(entry => {
-                const entryDate = new Date(entry.date);
-                const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                const formattedDate = entryDate.toLocaleDateString('en-US', options);
-                
-                const entryCard = document.createElement('div');
-                entryCard.className = 'entry-card';
-                entryCard.innerHTML = `
-                    <div class="entry-date">${formattedDate}</div>
-                    <div class="entry-content">
-                        <h3 class="entry-title">${entry.title}</h3>
-                        <p class="entry-excerpt">${entry.excerpt}</p>
-                        <a href="#" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                `;
-                
-                entriesContainer.appendChild(entryCard);
-            });
-        }
-        
-        // Initialize with all entries
-        renderAllEntries();
-
-        function showFullEntry(entryId) {
-            const entry = journalEntries.find(e => e.id === entryId);
-            if (entry) {
-                entriesContainer.innerHTML = `
-                    <div class="entry-card">
-                        <div class="entry-date">${new Date(entry.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
-                        <div class="entry-content">
-                            <h3 class="entry-title">${entry.title}</h3>
-                            <div class="entry-full-content">
-                                <p>${entry.content}</p>
-                                <button id="backToEntries" class="cta-button" style="margin-top: 20px;">
-                                    <i class="fas fa-arrow-left"></i> Back to all entries
-                                </button>
-                            </div>
+                        <div class="entry-full-content">
+                            <p>${entry.content}</p>
+                            <button id="backToEntries" class="cta-button" style="margin-top: 20px;">
+                                <i class="fas fa-arrow-left"></i> Back to all entries
+                            </button>
                         </div>
                     </div>
-                `;
-                
-                document.getElementById('backToEntries').addEventListener('click', renderAllEntries);
-            }
+                </div>
+            `;
+            
+            document.getElementById('backToEntries').addEventListener('click', renderAllEntries);
         }
-
+    }
+    
+    // Create entry card HTML
+    function createEntryCard(entry) {
+        const entryDate = new Date(entry.date);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = entryDate.toLocaleDateString('en-US', options);
+        
+        const entryCard = document.createElement('div');
+        entryCard.className = 'entry-card';
         entryCard.innerHTML = `
             <div class="entry-date">${formattedDate}</div>
             <div class="entry-content">
@@ -769,15 +670,81 @@
                 <a href="#" class="read-more" data-entry-id="${entry.id}">Read more <i class="fas fa-arrow-right"></i></a>
             </div>
         `;
-
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('read-more') || e.target.parentElement.classList.contains('read-more')) {
-                e.preventDefault();
-                const readMoreLink = e.target.classList.contains('read-more') ? e.target : e.target.parentElement;
-                const entryId = parseInt(readMoreLink.getAttribute('data-entry-id'));
-                showFullEntry(entryId);
-            }
+        
+        return entryCard;
+    }
+    
+    // Show entries for a specific date
+    function showEntriesForDate(date) {
+        const filteredEntries = journalEntries.filter(entry => entry.date === date);
+        
+        entriesContainer.innerHTML = '';
+        
+        if (filteredEntries.length === 0) {
+            entriesContainer.innerHTML = '<p>No entries found for this date.</p>';
+            return;
+        }
+        
+        filteredEntries.forEach(entry => {
+            entriesContainer.appendChild(createEntryCard(entry));
         });
-    </script>
+    }
+    
+    // Search functionality
+    searchButton.addEventListener('click', performSearch);
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            performSearch();
+        }
+    });
+    
+    function performSearch() {
+        const searchTerm = searchInput.value.toLowerCase();
+        
+        if (!searchTerm) {
+            renderAllEntries();
+            return;
+        }
+        
+        const filteredEntries = journalEntries.filter(entry => 
+            entry.title.toLowerCase().includes(searchTerm) || 
+            entry.excerpt.toLowerCase().includes(searchTerm) ||
+            entry.content.toLowerCase().includes(searchTerm)
+        );
+        
+        entriesContainer.innerHTML = '';
+        
+        if (filteredEntries.length === 0) {
+            entriesContainer.innerHTML = '<p>No entries match your search.</p>';
+            return;
+        }
+        
+        filteredEntries.forEach(entry => {
+            entriesContainer.appendChild(createEntryCard(entry));
+        });
+    }
+    
+    // Render all entries
+    function renderAllEntries() {
+        entriesContainer.innerHTML = '';
+        
+        journalEntries.forEach(entry => {
+            entriesContainer.appendChild(createEntryCard(entry));
+        });
+    }
+    
+    // Event delegation for read-more buttons
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('read-more') || e.target.parentElement.classList.contains('read-more')) {
+            e.preventDefault();
+            const readMoreLink = e.target.classList.contains('read-more') ? e.target : e.target.parentElement;
+            const entryId = parseInt(readMoreLink.getAttribute('data-entry-id'));
+            showFullEntry(entryId);
+        }
+    });
+    
+    // Initialize with all entries
+    renderAllEntries();
+</script>
 </body>
 </html>
