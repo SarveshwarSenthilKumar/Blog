@@ -490,38 +490,44 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
-                    <h3>NeoJournal</h3>
-                    <p>Your intelligent digital journal designed for the modern thinker.</p>
+                    <h3>About This Blog</h3>
+                    <p>A personal digital journal where I share my thoughts, ideas, and experiences. Writing helps me reflect and grow.</p>
+                    <div class="social-links" style="margin-top: 15px;">
+                        <a href="#" style="color: white; margin-right: 15px; font-size: 20px;"><i class="fab fa-twitter"></i></a>
+                        <a href="#" style="color: white; margin-right: 15px; font-size: 20px;"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" style="color: white; margin-right: 15px; font-size: 20px;"><i class="fab fa-github"></i></a>
+                        <a href="#" style="color: white; font-size: 20px;"><i class="fas fa-envelope"></i></a>
+                    </div>
                 </div>
                 <div class="footer-column">
-                    <h3>Features</h3>
+                    <h3>Categories</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Secure Storage</a></li>
-                        <li><a href="#">AI Insights</a></li>
-                        <li><a href="#">Custom Themes</a></li>
-                        <li><a href="#">Mobile App</a></li>
+                        <li><a href="#">Personal Reflections</a></li>
+                        <li><a href="#">Tech & Coding</a></li>
+                        <li><a href="#">Book Reviews</a></li>
+                        <li><a href="#">Life Lessons</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
-                    <h3>Company</h3>
+                    <h3>Quick Links</h3>
                     <ul class="footer-links">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Press</a></li>
+                        <li><a href="#">About Me</a></li>
+                        <li><a href="#">Featured Posts</a></li>
+                        <li><a href="#">Reading List</a></li>
                         <li><a href="#">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
-                    <h3>Legal</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Security</a></li>
-                    </ul>
+                    <h3>Subscribe</h3>
+                    <p>Get notified when I publish new posts.</p>
+                    <form style="margin-top: 10px;">
+                        <input type="email" placeholder="Your email" style="padding: 10px; width: 100%; border-radius: 5px; border: none; margin-bottom: 10px;">
+                        <button type="submit" class="cta-button" style="width: 100%; padding: 10px;">Subscribe</button>
+                    </form>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Sarveshwar Senthil Kumar. All rights reserved.</p>
+                <p>&copy; 2025 Sarveshwar Senthil Kumar. All thoughts and opinions are my own.</p>
             </div>
         </div>
     </footer>
@@ -537,10 +543,11 @@
     const searchButton = document.querySelector('.search-button');
     
     // Sample journal entries data
+    // Remember tp wrote tje date as one day later for time zone issues
     const journalEntries = [
         {
             id: 1,
-            date: '2025-06-24',
+            date: '2025-06-25',
             title: 'First Entry',
             excerpt: 'This is the first entry into the journal to get a feel for this writing style.',
             content: 'Hi! My name is Sarveshwar Senthil Kumar and this is my first journal entry on this new blog site. This seemed like a cool concept which I stole from The Social Network.'
