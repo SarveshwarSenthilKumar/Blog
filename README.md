@@ -5,34 +5,40 @@ Welcome to my personal blog and development journal! This space serves as both a
 ## 🚀 Features
 
 - **Personal Blog**: Regular updates about my coding journey, projects, and learnings
-- **Code Documentation**: Detailed explanations of my code and projects for future reference
-- **Goal Tracking**: Progress updates on my personal and professional development goals
+- **Project Showcase**: Detailed documentation of my projects with code examples and demos
 - **Responsive Design**: Accessible on various devices and screen sizes
-- **Dark Mode**: Easy on the eyes for late-night coding sessions (coming soon!)
+- **Dark Mode**: Easy on the eyes for late-night coding sessions
+- **Search Functionality**: Easily find content across all posts
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [Next.js](https://nextjs.org/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Deployment**: [Vercel](https://vercel.com/)
-- **Content Management**: [Markdown](https://www.markdownguide.org/)
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **Styling**: CSS with modern layout techniques (Flexbox, Grid)
+- **Deployment**: GitHub Pages
+- **Content Management**: Handcrafted HTML/CSS with Markdown for blog posts
 
-## 📝 Blogging Goals
+## 📝 Recent Projects
 
-I aim to update this blog regularly with:
-- Project showcases and walkthroughs
-- Tutorials on things I've learned
-- Code snippets and solutions to problems I've encountered
-- Personal reflections on my growth as a developer
-- Updates on my ongoing goals and projects
+### 1. [Personal Portfolio Website](https://github.com/SarveshwarSenthilKumar/portfolio)
+A responsive portfolio website showcasing my projects and skills.
 
-## 🚧 Upcoming Features
+### 2. [Blog Platform](https://github.com/SarveshwarSenthilKumar/Blog)
+This very blog, built with pure HTML, CSS, and JavaScript.
 
-- [ ] Implement dark mode
-- [ ] Add a search functionality
-- [ ] Create project showcase section
-- [ ] Add tags and categories for posts
-- [ ] Implement comment system
+## 🎯 Current Focus Areas
+
+- Web Performance Optimization
+- Responsive Web Design
+- JavaScript Best Practices
+- Clean Code Architecture
+
+## 🚧 Future Enhancements
+
+- [ ] Add an RSS feed
+- [ ] Implement a newsletter subscription
+- [ ] Add a projects gallery
+- [ ] Create more interactive UI components
+- [ ] Optimize for better SEO
 
 ## 📬 Contact
 
